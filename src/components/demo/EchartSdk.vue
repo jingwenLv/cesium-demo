@@ -1,0 +1,101 @@
+
+<template>
+    <el-row ref="viewerContainer" class="demo-viewer">
+        <vc-viewer ref="vcViewer" :cesium-path="cesiumPath" :animation="animation" :timeline="timeline"
+            :fullscreen-button="fullscreenButton" :fullscreen-element="fullscreenElement" @ready="onViewerReady"
+            @left-click="onLeftClick">
+            <vc-navigation :offset="offset" @compass-evt="onNavigationEvt" :otherOpts="otherOpts"
+                @zoom-evt="onNavigationEvt"></vc-navigation>
+            <vc-entity v-model:billboard="billboard" ref="entity" @click="onEntityClick" :position="{ lng: 108, lat: 32 }"
+                :point="point" :label="label">
+                <vc-graphics-billboard ref="billboard"
+                    image="https://zouyaoji.top/vue-cesium/favicon.png"></vc-graphics-billboard>
+                <vc-graphics-rectangle :coordinates="[130, 20, 80, 25]" material="green"></vc-graphics-rectangle>
+            </vc-entity>
+            <!-- 天地图注记 -->
+            <vc-layer-imagery :sort-order="20">
+                <vc-imagery-provider-tianditu map-style="cva_c"
+                    token="436ce7e50d27eede2f2929307e6b33c0"></vc-imagery-provider-tianditu>
+            </vc-layer-imagery>
+            <!-- 天地图影像 -->
+            <vc-layer-imagery :sort-order="10">
+                <vc-imagery-provider-tianditu map-style="img_c"
+                    token="436ce7e50d27eede2f2929307e6b33c0"></vc-imagery-provider-tianditu>
+            </vc-layer-imagery>
+        </vc-viewer>
+        <el-row class="demo-toolbar">
+            <el-row>
+                <el-button type="danger" round @click="unload">销毁</el-button>
+                <el-button type="danger" round @click="load">加载</el-button>
+                <el-button type="danger" round @click="reload">重载</el-button>
+            </el-row>
+        </el-row>
+    </el-row>
+</template>
+    
+<script>
+import { startup } from './echart.js'
+export default {
+    data() {
+        return {
+            animation: true,
+            timeline: true,
+            fullscreenButton: true,
+            fullscreenElement: document.body,
+            point: {
+                pixelSize: 28,
+                color: 'red'
+            },
+            label: {
+                text: 'Hello World',
+                pixelOffset: [0, 150]
+            },
+            billboard: {},
+            offset: [10, 25],
+            otherOpts: {
+                offset: [0, 32],
+                position: 'bottom-right'
+            },
+            cesiumPath: 'https://earthsdk.com/v/last/XbsjEarth/XbsjEarth.js'
+        }
+    },
+    mounted() {
+        this.$refs.vcViewer.creatingPromise.then(({ Cesium, viewer }) => {
+            console.log('viewer is loaded.')
+        })
+    },
+    methods: {
+        onViewerReady({ Cesium, viewer, earth }) {
+            console.log(earth, 'echart')
+            startup(earth)
+        },
+        onNavigationEvt(e) {
+            console.log(e)
+        },
+        onEntityClick(e) {
+            console.log(e)
+        },
+        onLeftClick(e) {
+            console.log(e)
+        },
+        load() {
+            this.$refs.vcViewer.load().then(e => {
+                console.log(e)
+            })
+        },
+        unload() {
+            this.$refs.vcViewer.unload().then(e => {
+                console.log(e)
+            })
+        },
+        reload() {
+            this.$refs.vcViewer.reload().then(e => {
+                console.log(e)
+            })
+        }
+    }
+}
+</script>
+    
+<style></style>
+    

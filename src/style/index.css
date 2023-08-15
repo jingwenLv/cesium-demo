@@ -1,0 +1,12 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.demo-toolbar {
+    position: absolute ;
+    z-index: 99999;
+    top: 16px;
+    left: 16px;
+}
