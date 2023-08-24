@@ -29,12 +29,15 @@ function startup(viewer) {
         pixelOffset: new Cesium.Cartesian2(-10, 10),
         scale: 0.3,
     });
+   
     // 4 创建雷达放射波
     // 4.1 先创建Geometry
     var cylinderGeometry = new Cesium.CylinderGeometry({
         length: length,
-        topRadius: length * 0.6,
-        bottomRadius: 0.0,
+        // topRadius: length * 0.6,
+        // bottomRadius: 0.0,
+        topRadius: 0.0,
+        bottomRadius: length * 0.5,
         // vertexFormat : Cesium.PerInstanceColorAppearance.VERTEX_FORMAT
         vertexFormat: Cesium.MaterialAppearance.MaterialSupport.TEXTURED.vertexFormat
         // vertexFormat:  Cesium.VertexFormat.ALL
@@ -68,10 +71,10 @@ function startup(viewer) {
                 fabric: {
                     type: 'VtxfShader1',
                     uniforms: {
-                        color: new Cesium.Color(238 / 255, 63 / 255, 77 / 255, 1),
-                        repeat: 26.0, // 重复
-                        offset: 0.2,
-                        thickness: 0.2, // 厚度
+                        color: new Cesium.Color(0.2, 1.0, 0.0, 1.0),
+                        repeat: 40.0,
+                        offset: 0.0,
+                        thickness: 0.1,
                     },
                     source: `
                             uniform vec4 color;
@@ -94,7 +97,6 @@ function startup(viewer) {
                 },
                 translucent: false
             }),
-            translucent: false, // 设置材质为半透明
             faceForward: false, // 当绘制的三角面片法向不能朝向视点时，自动翻转法向，从而避免法向计算后发黑等问题
             closed: false, // 是否为封闭体，实际上执行的是是否进行背面裁剪
             // vertexShaderSource: `
@@ -120,7 +122,7 @@ function startup(viewer) {
     // 5 动态修改雷达材质中的offset变量，从而实现动态效果。
     viewer.scene.preUpdate.addEventListener(function () {
         var offset = radar.appearance.material.uniforms.offset;
-        offset -= 0.001;
+        offset -= 0.0008;
         if (offset > 1.0) {
             offset = 0.0;
         }

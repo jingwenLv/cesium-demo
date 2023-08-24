@@ -48,6 +48,8 @@ import { initRadarScanning } from './js/radarScanning.js'
 import { initDynamicWall } from './js/dynamicWall.js'
 import { initFlowLine } from './js/flowLine.js'
 import { initControlsModel } from './js/controlsModel.js'
+import { initCentrumOpticus } from './js/centrumOpticus.js'
+import { initDynamicSquare } from './js/dynamicSquare.js'
 export default {
     data() {
         return {
@@ -89,7 +91,7 @@ export default {
                 },
                 {
                     value: '雷达',
-                    label: '雷达'
+                    label: '雷达-空对地'
                 },
                 {
                     value: '平面',
@@ -134,6 +136,14 @@ export default {
                 {
                     value: 'flowLine',
                     label: 'flowLine'
+                },
+                {
+                    value: '视椎体',
+                    label: '视椎体'
+                },
+                {
+                    value: '动态正方体',
+                    label: '动态正方体'
                 },
             ]
         }
@@ -223,6 +233,12 @@ export default {
                     break;
                 case 'flowLine':
                     initFlowLine(this._Cesium, this._viewer)
+                    break;
+                case '视椎体':
+                    initCentrumOpticus(this._Cesium, this._viewer)
+                    break;
+                case '动态正方体':
+                    initDynamicSquare(this._Cesium, this._viewer)
                     break;
                 default:
                     startup(this._viewer)
